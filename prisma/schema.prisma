@@ -1,0 +1,168 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Cargo {
+  Professor
+  Coordenador
+  Diretor
+}
+
+model EstoqueBrinquedo {
+  id_estoque     Int            @id @default(autoincrement())
+  Data_Entrada   DateTime       @default(now()) @updatedAt @db.Timestamptz()
+  Data_Saida     DateTime?      @updatedAt @db.Timestamptz()
+  Referencia     String         @db.VarChar(255)
+  FormaDeEntrada FormadeEntrada
+
+  Estoque_Manutencao Manutencao[]
+
+  id_brinquedo     Int?
+  Cadastro_Estoque CadastroBrinquedo? @relation(fields: [id_brinquedo], references: [id_brinquedo])
+
+  id_Emprestimo      Int?
+  Emprestimo_Estoque Emprestimo? @relation(fields: [id_Emprestimo], references: [id_Emprestimo])
+
+  id_status      Int?
+  Estoque_Status Status? @relation(fields: [id_status], references: [id_status])
+}
+
+model CadastroBrinquedo {
+  id_brinquedo Int    @id @default(autoincrement())
+  Descricao    String @db.VarChar(255)
+  idade_min    Int
+  idade_max    Int
+  quantidade   Int    @default(1)
+
+  Brinquedo_Estoque    EstoqueBrinquedo[]
+  Emprestimo_Brinquedo Emprestimo[]
+  Brinquedo_Reserva    Reserva[]
+
+  id_area       Int?
+  Cadastro_area AreaDeDesenvolvimento? @relation(fields: [id_area], references: [id_area])
+
+  id_classificacao       Int?
+  Cadastro_classificacao Classificacao? @relation(fields: [id_classificacao], references: [id_classificacao])
+}
+
+model Emprestimo {
+  id_Emprestimo  Int       @id @default(autoincrement())
+  Data_Retirada  DateTime  @default(now()) @db.Timestamptz()
+  Data_devolucao DateTime  @db.Timestamptz()
+  Data_Retorno   DateTime? @db.Timestamptz()
+
+  ReservaEstoque EstoqueBrinquedo[]
+
+  id_status      Int?
+  Reserva_Status Status? @relation(fields: [id_status], references: [id_status])
+
+  id_brinquedo      Int?
+  Reserva_Brinquedo CadastroBrinquedo? @relation(fields: [id_brinquedo], references: [id_brinquedo])
+
+  id_aluno Int?
+
+  Reserva_Aluno CadastroAluno? @relation(fields: [id_aluno], references: [id_aluno])
+}
+
+model Status {
+  id_status Int               @id @default(autoincrement())
+  status    StatusDoBrinquedo @unique @default(Disponivel)
+
+  Brinquedo_Status Emprestimo[]
+  StatusEstoque    EstoqueBrinquedo[]
+}
+
+enum StatusDoBrinquedo {
+  Manutencao
+  Reservado
+  Disponivel
+  Alugado
+  Atrasado
+  Descartado
+  Analise
+}
+
+enum FormadeEntrada {
+  Compra
+  Doacao
+}
+
+model CadastroUsuario {
+  id_usuario Int    @id @default(autoincrement())
+  Nome       String @db.VarChar(255)
+  Email      String @unique @db.VarChar(255)
+  Senha      String @db.VarChar(255)
+  Nivel      Cargo
+
+  Controle_Cadastro ControleUsuario[]
+}
+
+model Controle {
+  id_controle Int    @id @default(autoincrement())
+  Descricao   String @db.VarChar(255)
+
+  ControleUsuario ControleUsuario[]
+}
+
+model ControleUsuario {
+  id_controleU Int @id @default(autoincrement())
+
+  id_usuario        Int?
+  Cadastro_Controle CadastroUsuario? @relation(fields: [id_usuario], references: [id_usuario])
+
+  id_controle      Int?
+  Controle_Usuario Controle? @relation(fields: [id_controle], references: [id_controle])
+}
+
+model CadastroAluno {
+  id_aluno Int    @id @default(autoincrement())
+  Nome     String
+  RA       Int
+  Serie    Int
+
+  emprestimo_aluno Emprestimo[]
+
+  reserva_aluno Reserva[]
+}
+
+model Manutencao {
+  id_manutencao Int      @id @default(autoincrement())
+  Data_Entrada  DateTime @default(now()) @db.Timestamptz()
+  Data_Saida    DateTime @default(now()) @db.Timestamptz()
+  Descricao String
+
+  estoque_manutencao   Int?
+  Brinquedo_Manutencao EstoqueBrinquedo? @relation(fields: [estoque_manutencao], references: [id_estoque])
+}
+
+model AreaDeDesenvolvimento {
+  id_area   Int    @id @default(autoincrement())
+  descricao String
+
+  Area_Brinquedo CadastroBrinquedo[]
+}
+
+model Classificacao {
+  id_classificacao Int    @id @default(autoincrement())
+  Descricao        String
+
+  Classificacao_Brinquedo CadastroBrinquedo[]
+}
+
+model Reserva {
+  id_reserva Int @id @default(autoincrement())
+
+  id_aluno      Int?
+  Reserva_Aluno CadastroAluno? @relation(fields: [id_aluno], references: [id_aluno])
+
+  id_brinquedo      Int?
+  Reserva_Brinquedo CadastroBrinquedo? @relation(fields: [id_brinquedo], references: [id_brinquedo])
+}
