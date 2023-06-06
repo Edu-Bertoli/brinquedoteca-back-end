@@ -2,9 +2,9 @@ import { Role } from "../decorators/enum";
 
 export interface UserPayload{
     sub: number,
-    email: string,
+    Email: string,
     Nivel: Role[],
-    nome: string,
+    Nome: string,
     iat?: number,
     exp?: number
 }

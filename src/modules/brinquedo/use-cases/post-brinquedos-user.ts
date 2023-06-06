@@ -13,11 +13,12 @@ export default class PostBrinquedosUser {
       arrayToCreate.push({
         Referencia: filters.referencia,
         Data_Entrada: new Date(),
+        Data_Saida: null,
         FormaDeEntrada: filters.formaDeEntrada,
         id_status: 1,
       });
     }
-
+    
     return await this.prismaService.cadastroBrinquedo.create({
       data: {
         Descricao: filters.descricao,
@@ -27,6 +28,7 @@ export default class PostBrinquedosUser {
         Brinquedo_Estoque: {
           createMany: {
             data: arrayToCreate,
+            
           },
         },
         Cadastro_area: {
@@ -40,6 +42,8 @@ export default class PostBrinquedosUser {
           },
         },
       },
+    
     });
+  
   }
 }

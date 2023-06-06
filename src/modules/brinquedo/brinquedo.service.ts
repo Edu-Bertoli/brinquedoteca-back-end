@@ -31,6 +31,16 @@ import { CreateControleDto } from './dtos/create.controle.dto.service';
 import FindAllOnClick from './use-cases/find-all-onclick-usercase';
 import PostStatusReserva from './use-cases/post-reserva-usercase';
 import GetAllReservaDto from './dtos/create-returnreserva.service';
+import { manutencaoDto } from './dtos/create-manutencao-dto.service';
+import PostManutencao from './use-cases/post-manutencao-usercase';
+import FindAllManutencaoUsecase from './use-cases/find-all-manutencao.user';
+import FindAllAlunos from './use-cases/find-all-alunos.user';
+import FindAllDisponivelEmprestimo from './use-cases/find-all-disponivel.user';
+import PostVoltadaManutencao from './use-cases/post-retornoDaManutencao.user';
+import { manutencaoRetornoDto } from './dtos/create-manutencaoretorno-dto.service';
+import FindAllReservados from './use-cases/find-all-reservados.user';
+import { updateReservados } from './dtos/create-reservados-dto.service';
+import UpdateReservados from './use-cases/update-reserva.usercase';
 
 @Injectable()
 export class BrinquedoService {
@@ -53,7 +63,14 @@ export class BrinquedoService {
     private filter3: GetFilterByArea,
     private controle: PostControle,
     private usecase0: FindAllOnClick,
-    private fazerReserva: PostStatusReserva
+    private fazerReserva: PostStatusReserva,
+    private criarReserva: PostManutencao,
+    private manutencao: FindAllManutencaoUsecase,
+    private alunos: FindAllAlunos,
+    private disponivel: FindAllDisponivelEmprestimo,
+    private manutencaoVolta: PostVoltadaManutencao,
+    private reservados: FindAllReservados,
+    private postR : UpdateReservados
   ) {}
 
   async findAllBrinquedos(filters: FilterFindAllBrinquedosDTO) {
@@ -82,7 +99,9 @@ export class BrinquedoService {
   async findAllStatus() {
     return await this.usecase8.FindAllStatus();
   }
-
+  async findAllAluno(filters: FilterFindAllBrinquedosDTO) {
+    return await this.alunos.findAllAluno(filters);
+  }
   async PostStatus() {
     return await this.especialcase.PostStatus();
   }
@@ -95,8 +114,8 @@ export class BrinquedoService {
     return await this.fazerreserva.AlugaBrinquedo(filters);
   }
 
-  async FindAllAlugados() {
-    return await this.alugados.FindAllAlugados();
+  async FindAllAlugados(filters: FilterFindAllBrinquedosDTO) {
+    return await this.alugados.FindAllAlugados(filters);
   }
 
   async FilterIdade(filters: CreateFilterIdade) {
@@ -114,15 +133,36 @@ export class BrinquedoService {
     return await this.filter3.GetFilterByDesenvolvimento(filters);
   }
 
-  async PostControle(filters: CreateControleDto) {
-    return await this.controle.PostControle(filters);
+  async PostControle() {
+    return await this.controle.PostControle();
   }
 
   async FindAllOnClick(filters: FilterFindAllBrinquedosDTO){
     return await this.usecase0.OnClick(filters)
   }
-
+  async FindEmprestimo(filters: FilterFindAllBrinquedosDTO){
+    return await this.disponivel.FindAllDisponivelEmprestimo(filters)
+  }
   async FazerReserva(filters: ReservaDto){
     return await this.fazerReserva.FazerReserva(filters)
+  }
+
+  async CriarReserva(filters: manutencaoDto ){
+    return await this.criarReserva.postManutencao(filters)
+  }
+  async Manutencao(filters: FilterFindAllBrinquedosDTO){
+    return await this.manutencao.findManutencao(filters)
+  }
+
+  async updateManutencao(filters: manutencaoRetornoDto){
+    return await this.manutencaoVolta.UpdateDaManutencao(filters)
+  }
+
+  async findAllReservados(filters: FilterFindAllBrinquedosDTO){
+    return await this.reservados.FindAllReservados(filters)
+  }
+
+  async updateReservados(filters: updateReservados){
+    return await this.postR.UpdateReservadosJesus(filters)
   }
 }

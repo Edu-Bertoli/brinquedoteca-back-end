@@ -14,6 +14,7 @@ CREATE TABLE "EstoqueBrinquedo" (
     "Data_Saida" TIMESTAMPTZ,
     "Referencia" VARCHAR(255) NOT NULL,
     "FormaDeEntrada" "FormadeEntrada" NOT NULL,
+    "deletedAt" BOOLEAN DEFAULT false,
     "id_brinquedo" INTEGER,
     "id_Emprestimo" INTEGER,
     "id_status" INTEGER,
@@ -28,7 +29,6 @@ CREATE TABLE "CadastroBrinquedo" (
     "idade_min" INTEGER NOT NULL,
     "idade_max" INTEGER NOT NULL,
     "quantidade" INTEGER NOT NULL DEFAULT 1,
-    "FormadeEntrada" TEXT NOT NULL,
     "id_area" INTEGER,
     "id_classificacao" INTEGER,
 
@@ -99,7 +99,8 @@ CREATE TABLE "Manutencao" (
     "id_manutencao" SERIAL NOT NULL,
     "Data_Entrada" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "Data_Saida" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "estoque_manutencao" INTEGER,
+    "Descricao" TEXT NOT NULL,
+    "id_estoque" INTEGER,
 
     CONSTRAINT "Manutencao_pkey" PRIMARY KEY ("id_manutencao")
 );
@@ -130,13 +131,7 @@ CREATE TABLE "Reserva" (
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "EstoqueBrinquedo_Referencia_key" ON "EstoqueBrinquedo"("Referencia");
-
--- CreateIndex
 CREATE UNIQUE INDEX "Status_status_key" ON "Status"("status");
-
--- CreateIndex
-CREATE UNIQUE INDEX "CadastroUsuario_Email_key" ON "CadastroUsuario"("Email");
 
 -- AddForeignKey
 ALTER TABLE "EstoqueBrinquedo" ADD CONSTRAINT "EstoqueBrinquedo_id_brinquedo_fkey" FOREIGN KEY ("id_brinquedo") REFERENCES "CadastroBrinquedo"("id_brinquedo") ON DELETE SET NULL ON UPDATE CASCADE;
@@ -169,7 +164,7 @@ ALTER TABLE "ControleUsuario" ADD CONSTRAINT "ControleUsuario_id_usuario_fkey" F
 ALTER TABLE "ControleUsuario" ADD CONSTRAINT "ControleUsuario_id_controle_fkey" FOREIGN KEY ("id_controle") REFERENCES "Controle"("id_controle") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Manutencao" ADD CONSTRAINT "Manutencao_estoque_manutencao_fkey" FOREIGN KEY ("estoque_manutencao") REFERENCES "EstoqueBrinquedo"("id_estoque") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "Manutencao" ADD CONSTRAINT "Manutencao_id_estoque_fkey" FOREIGN KEY ("id_estoque") REFERENCES "EstoqueBrinquedo"("id_estoque") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Reserva" ADD CONSTRAINT "Reserva_id_aluno_fkey" FOREIGN KEY ("id_aluno") REFERENCES "CadastroAluno"("id_aluno") ON DELETE SET NULL ON UPDATE CASCADE;

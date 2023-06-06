@@ -9,5 +9,5 @@ export  class CreateAlugarDto {
 
         @IsNotEmpty()
         @IsNumber()
-        id_aluno: number
+        RA: number
 }

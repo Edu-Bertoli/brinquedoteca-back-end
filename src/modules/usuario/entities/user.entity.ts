@@ -2,8 +2,8 @@ import { Role } from "src/auth/decorators/enum";
 
 export class User {
     id?: number;
-    email: string;
+    Email: string;
     password: string;
-    nome: string;
+    Nome: string;
     Nivel: Role[];
   }

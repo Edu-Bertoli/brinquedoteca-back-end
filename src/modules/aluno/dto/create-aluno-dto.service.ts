@@ -9,7 +9,7 @@ export class CreateAlunoDto{
     @IsNotEmpty()
     RA: number
 
-    @IsNumber()
+    @IsString()
     @IsNotEmpty()
-    serie: number
+    serie: string
 }

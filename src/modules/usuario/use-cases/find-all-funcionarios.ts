@@ -10,8 +10,8 @@ export default class FindAllFuncionariosUserCase {
 
    async FindAllFuncionarios(filters: FuncionariosDto){
     const funcionarios = await this.prismaService.cadastroUsuario.findMany({
-        take: filters.itensPerPage,
-        skip: (filters.page - 1) * filters.itensPerPage,
+        take: filters.itemsPerPage,
+        skip: (filters.currentPage - 1) * filters.itemsPerPage,
         select:{
           id_usuario: true,
           Nome: true,
@@ -19,6 +19,6 @@ export default class FindAllFuncionariosUserCase {
           Nivel: true
         }
     });
-    return {...funcionarios};
+    return funcionarios;
    }
 }

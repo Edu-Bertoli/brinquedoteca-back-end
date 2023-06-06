@@ -12,6 +12,9 @@ import { AlunoModule } from './modules/aluno/aluno.module';
 import { AuthModule } from './auth/auth.module';
 import { JwtAuthGuard } from './auth/guards/jwt.auth.guard';
 import { RolesGuard } from './auth/guards/roles.guard';
+import { ScheduleModule } from '@nestjs/schedule';
+import { BrinquedoTaskService } from './modules/brinquedo/tasks/brinquedo-task.service';
+import { DevolucaoTaskService } from './modules/brinquedo/tasks/devolucao-task.service';
 
 @Module({
   imports: [
@@ -19,11 +22,11 @@ import { RolesGuard } from './auth/guards/roles.guard';
       ttl: 25,
       limit: 20,
     }),
+    ScheduleModule.forRoot(),
     BrinquedoModule,
     UsuarioModule,
     AlunoModule,
-    AuthModule
-    
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [
@@ -32,16 +35,9 @@ import { RolesGuard } from './auth/guards/roles.guard';
     {
       provide: APP_GUARD,
       useClass: ThrottlerGuard,
-    
     },
-    {
-      provide: APP_GUARD,
-      useClass: JwtAuthGuard
-    },
-    {
-      provide: APP_GUARD,
-      useClass: RolesGuard,
-    },
+    BrinquedoTaskService,
+    DevolucaoTaskService,
     CreateUserDto,
   ],
 })

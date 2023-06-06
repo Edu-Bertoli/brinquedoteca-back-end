@@ -18,5 +18,8 @@ export default class ReservaDto {
   
   @IsNumber()
   @IsNotEmpty()
-  id_aluno: number
+  RA: number
+
+
+  
 }

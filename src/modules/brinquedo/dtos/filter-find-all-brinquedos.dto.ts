@@ -1,14 +1,29 @@
 import { Body } from '@nestjs/common';
-import { IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
+import { Transform, Type } from 'class-transformer';
+import {
+  IsInt,
+  IsNotEmpty,
+  IsNumber,
+  IsNumberString,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 
 export default class FilterFindAllBrinquedosDTO {
-  @IsNumber()
+  @IsInt()
   @IsNotEmpty()
   @IsOptional()
-  page: number = 1;
+  @Type(() => Number)
+  currentPage: number = 1;
 
-  @IsNumber()
+  @IsInt()
   @IsNotEmpty()
   @IsOptional()
-  itensPerPage: number = 10;
+  @Type(() => Number)
+  itemsPerPage: number = 10;
+
+  @IsString()
+  @IsNotEmpty()
+  @IsOptional()
+  descricao: string;
 }

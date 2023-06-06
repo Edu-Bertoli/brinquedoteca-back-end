@@ -1,34 +1,50 @@
 import { Injectable } from "@nestjs/common";
 import { PrismaService } from "src/database/prisma.service";
+import FilterFindAllBrinquedosDTO from "../dtos/filter-find-all-brinquedos.dto";
 
 
 @Injectable()
 export default class FindAllAlugados{
   constructor(private prismaService: PrismaService) {}
 
-  async FindAllAlugados(){
-    return await this.prismaService.emprestimo.findMany({
+  async FindAllAlugados(filters: FilterFindAllBrinquedosDTO){
+  
+    const teste = await this.prismaService.emprestimo.findMany({
+        take: filters.itemsPerPage,
+        skip: (filters.currentPage - 1) * 10,
         select:{
-
+            id_Emprestimo: true,
             Data_Retirada: true,
             Data_devolucao: true,
+            
             Reserva_Aluno: true,
-            ReservaEstoque:{
+            Reserva_Brinquedo:{
                 select:{
-                    Referencia: true,
-                    Cadastro_Estoque:{
+                    id_brinquedo: true,
+                    Descricao: true,
+                    idade_max: true,
+                    idade_min: true,
+                    Cadastro_area:{
                         select:{
-                             Descricao: true
+                              descricao: true  
                         }
                     },
-                    Estoque_Status:{
+                    Cadastro_classificacao:{
                         select:{
-                            status: true
+                            Descricao: true
+                        }
+                    },
+                    Brinquedo_Estoque:{
+                        select:{
+                            Referencia: true,
+                           
                         }
                     }
                 }
             }
+         
         }
     })
+    return teste
 }
 }

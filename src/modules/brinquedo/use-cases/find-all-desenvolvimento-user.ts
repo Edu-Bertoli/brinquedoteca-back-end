@@ -7,12 +7,13 @@ export default class FindAllDesenvolvimentosUserCase{
   constructor(private prismaService: PrismaService) {}
 
   async GetAllDesenvolvimento( ){
-    return await this.prismaService.areaDeDesenvolvimento.findMany({
+    const teste = await this.prismaService.areaDeDesenvolvimento.findMany({
       select:{
-        descricao: true
+        descricao: true,
+        id_area: true
       }
     })
-
+    return teste
   }
 }
 

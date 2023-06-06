@@ -17,15 +17,15 @@ export class AuthService{
     login(user: User): UserToken {
        const payload: UserPayload = {
             sub: user.id,
-            email: user.email,
+            Email: user.Email,
             Nivel: user.Nivel,
-            nome: user.nome
+            Nome: user.Nome
        }
 
        const jwtToken = this.JwtService.sign(payload)
 
        return {
-         access_token: jwtToken
+         access_token: jwtToken,
        }
     }
     async validateUser(email: string, password: string ) {

@@ -8,7 +8,7 @@ export default class PostStatusBrinquedo {
   async PostStatus(){
     const status = await this.prismaService.status.create({
         data:{
-            status: "Atrasado"
+            status: "Manutencao"
         }
     })
 

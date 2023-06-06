@@ -7,15 +7,44 @@ export default class FindAllBrinquedosUsecase {
   constructor(private prismaService: PrismaService) {}
 
   async execute(filters: FilterFindAllBrinquedosDTO) {
-    return await this.prismaService.cadastroBrinquedo.findMany({
-      take: filters.itensPerPage,
-      skip: (filters.page - 1) * filters.itensPerPage,
+    const teste = await this.prismaService.cadastroBrinquedo.findMany({
+      where:{
+        OR:{ 
+          
+           Brinquedo_Estoque:{
+
+          every:{
+            deletedAt: false
+          }
+        },
+        Descricao: {
+          contains: filters.descricao
+        }
+        }
+      
+      },
+      take: filters.itemsPerPage,
+      skip: (filters.currentPage  - 1) * filters.itemsPerPage,
       select: {
         id_brinquedo: true,
         Descricao: true,
         quantidade: true,
-        idade_min: true,
         idade_max: true,
+        idade_min: true,
+        
+        Brinquedo_Estoque:{
+          select:{
+            Referencia: true,
+            id_estoque: true,
+            Data_Entrada: true,
+            FormaDeEntrada: true,
+            Estoque_Status:{
+              select:{
+                status: true
+              }
+            }
+          }
+        },
        
         // Brinquedo_Estoque: {
         //   select: {
@@ -42,6 +71,9 @@ export default class FindAllBrinquedosUsecase {
           },
         },
       },
+      orderBy:{
+      }
     });
+    return teste
   }
 }

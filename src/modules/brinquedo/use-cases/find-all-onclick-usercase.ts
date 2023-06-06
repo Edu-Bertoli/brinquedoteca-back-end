@@ -8,8 +8,8 @@ export default class FindAllOnClick {
 
   async OnClick(filters: FilterFindAllBrinquedosDTO){ 
     return await this.prismaService.cadastroBrinquedo.findMany({
-    take: filters.itensPerPage,
-    skip: (filters.page - 1) * filters.itensPerPage,
+    take: filters.itemsPerPage,
+    skip: (filters.currentPage - 1) * filters.itemsPerPage,
     select: {
       id_brinquedo: true,
       Brinquedo_Estoque:{

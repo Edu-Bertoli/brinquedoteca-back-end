@@ -1,14 +1,17 @@
-import { IsNotEmpty, IsNumber, IsOptional } from "class-validator";
+import { Type } from "class-transformer";
+import { IsInt, IsNotEmpty, IsNumber, IsOptional } from "class-validator";
 
 
 export class FuncionariosDto{
-    @IsNumber()
+    @IsInt()
     @IsNotEmpty()
     @IsOptional()
-    page: number = 1;
+    @Type(() => Number)
+    currentPage: number = 1;
   
-    @IsNumber()
+    @IsInt()
     @IsNotEmpty()
     @IsOptional()
-    itensPerPage: number = 10;
+    @Type(() => Number) 
+    itemsPerPage: number = 10;
 }

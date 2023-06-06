@@ -20,8 +20,8 @@ export default class FindOneBrinquedoUserCase {
                     contains: filters.nome
 
                  },
-                 id_brinquedo: filters.id_estoque
-                }
+                },
+                id_estoque: filters.id_estoque
             }]
         },
         select: {

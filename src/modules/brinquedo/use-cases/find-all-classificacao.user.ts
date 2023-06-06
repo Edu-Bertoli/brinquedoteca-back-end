@@ -9,7 +9,8 @@ export default class FindAllClassificacaoUserCase{
   async GetAllClassificacao(){
     return await this.prismaService.classificacao.findMany({
       select:{
-        Descricao: true
+        Descricao: true,
+        id_classificacao: true
       }
     })
 }

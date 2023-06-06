@@ -25,6 +25,16 @@ import GetFilterByArea from './use-cases/find-filter-estoque-area.usercase';
 import PostControle from './use-cases/post-controle.usercase';
 import FindAllOnClick from './use-cases/find-all-onclick-usercase';
 import PostStatusReserva from './use-cases/post-reserva-usercase';
+import PostManutencao from './use-cases/post-manutencao-usercase';
+import FindAllManutencaoUsecase from './use-cases/find-all-manutencao.user';
+import FindAllAlunos from './use-cases/find-all-alunos.user';
+import FindAllDisponivelEmprestimo from './use-cases/find-all-disponivel.user';
+import PostVoltadaManutencao from './use-cases/post-retornoDaManutencao.user';
+import { ReservaTask } from './tasks/reserva-task.service';
+import FindAllReservados from './use-cases/find-all-reservados.user';
+import { updateReservados } from './dtos/create-reservados-dto.service';
+import UpdateReservados from './use-cases/update-reserva.usercase';
+import { ManutencaoTaskService } from './tasks/manutencao-task.service';
 
 @Module({
   providers: [
@@ -52,7 +62,16 @@ import PostStatusReserva from './use-cases/post-reserva-usercase';
     GetFilterByArea,
     PostControle,
     FindAllOnClick,
-    PostStatusReserva
+    PostStatusReserva,
+    PostManutencao,
+    FindAllManutencaoUsecase,
+    FindAllAlunos,
+    FindAllDisponivelEmprestimo,
+    PostVoltadaManutencao,
+    ReservaTask,
+    FindAllReservados,
+    UpdateReservados,
+    ManutencaoTaskService
   ],
   controllers: [BrinquedoController],
 })

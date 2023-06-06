@@ -19,12 +19,13 @@ enum Cargo {
 model EstoqueBrinquedo {
   id_estoque     Int            @id @default(autoincrement())
   Data_Entrada   DateTime       @default(now()) @updatedAt @db.Timestamptz()
-  Data_Saida     DateTime?      @updatedAt @db.Timestamptz()
+  Data_Saida     DateTime?     
   Referencia     String         @db.VarChar(255)
   FormaDeEntrada FormadeEntrada
-
+  deletedAt Boolean?  @default(false)
+ 
   Estoque_Manutencao Manutencao[]
-
+  
   id_brinquedo     Int?
   Cadastro_Estoque CadastroBrinquedo? @relation(fields: [id_brinquedo], references: [id_brinquedo])
 
@@ -33,6 +34,9 @@ model EstoqueBrinquedo {
 
   id_status      Int?
   Estoque_Status Status? @relation(fields: [id_status], references: [id_status])
+
+
+
 }
 
 model CadastroBrinquedo {
@@ -44,13 +48,14 @@ model CadastroBrinquedo {
 
   Brinquedo_Estoque    EstoqueBrinquedo[]
   Emprestimo_Brinquedo Emprestimo[]
-  Brinquedo_Reserva    Reserva[]
 
   id_area       Int?
   Cadastro_area AreaDeDesenvolvimento? @relation(fields: [id_area], references: [id_area])
 
   id_classificacao       Int?
   Cadastro_classificacao Classificacao? @relation(fields: [id_classificacao], references: [id_classificacao])
+
+  ReservaBrinquedo Reserva[]
 }
 
 model Emprestimo {
@@ -98,7 +103,7 @@ enum FormadeEntrada {
 model CadastroUsuario {
   id_usuario Int    @id @default(autoincrement())
   Nome       String @db.VarChar(255)
-  Email      String @unique @db.VarChar(255)
+  Email      String @db.VarChar(255)
   Senha      String @db.VarChar(255)
   Nivel      Cargo
 
@@ -126,7 +131,7 @@ model CadastroAluno {
   id_aluno Int    @id @default(autoincrement())
   Nome     String
   RA       Int
-  Serie    Int
+  Serie    String
 
   emprestimo_aluno Emprestimo[]
 
@@ -136,11 +141,11 @@ model CadastroAluno {
 model Manutencao {
   id_manutencao Int      @id @default(autoincrement())
   Data_Entrada  DateTime @default(now()) @db.Timestamptz()
-  Data_Saida    DateTime @default(now()) @db.Timestamptz()
+  Data_Saida    DateTime?  @db.Timestamptz()
   Descricao String
 
-  estoque_manutencao   Int?
-  Brinquedo_Manutencao EstoqueBrinquedo? @relation(fields: [estoque_manutencao], references: [id_estoque])
+  id_estoque  Int?
+  Brinquedo_Manutencao EstoqueBrinquedo? @relation(fields: [id_estoque], references: [id_estoque])
 }
 
 model AreaDeDesenvolvimento {
@@ -163,6 +168,9 @@ model Reserva {
   id_aluno      Int?
   Reserva_Aluno CadastroAluno? @relation(fields: [id_aluno], references: [id_aluno])
 
-  id_brinquedo      Int?
+  Acionado Boolean @default(false)
+  TempoLimite DateTime?
+
+  id_brinquedo Int?
   Reserva_Brinquedo CadastroBrinquedo? @relation(fields: [id_brinquedo], references: [id_brinquedo])
 }

@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Manutencao" ALTER COLUMN "Data_Saida" SET DATA TYPE TIMESTAMPTZ;
